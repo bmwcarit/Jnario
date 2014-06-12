@@ -54,6 +54,10 @@ class SuiteDocGenerator extends AbstractDocGenerator {
 			sourceCode = file.pre("lang-suite")
 			fileName = file.fileName
 			executionStatus = rootSuite.executionStateClass
+			showTabs = tabGenerated
+			specTabLabel = labelForSpecificationTab
+			sourceTabLabel = labelForSourceTab
+			footer = footerText
 		]
 	}
 
@@ -67,6 +71,10 @@ class SuiteDocGenerator extends AbstractDocGenerator {
 			sourceCode = file.pre("lang-suite")
 			fileName = file.fileName
 			executionStatus = suite.executionStateClass
+			showTabs = tabGenerated
+			specTabLabel = labelForSpecificationTab
+			sourceTabLabel = labelForSourceTab
+			footer = footerText
 		]
 	}
 	

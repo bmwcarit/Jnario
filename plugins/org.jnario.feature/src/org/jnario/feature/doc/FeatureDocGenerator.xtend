@@ -39,6 +39,10 @@ class FeatureDocGenerator extends AbstractDocGenerator {
 			sourceCode = feature.eContainer.pre("lang-feature")
 			fileName = feature.fileName
 			executionStatus = feature.executionStateClass
+			showTabs = tabGenerated
+			specTabLabel = labelForSpecificationTab
+			sourceTabLabel = labelForSourceTab
+			footer = footerText
 		]
 	}
 

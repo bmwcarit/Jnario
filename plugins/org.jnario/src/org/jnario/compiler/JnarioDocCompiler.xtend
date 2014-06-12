@@ -39,6 +39,22 @@ class JnarioDocCompiler extends XtendBatchCompiler{
 		this.resultMapping = resultMapping
 	}
 	
+	def setTabGenerated(boolean show){
+		this.docGenerator.tabGenerated = show
+	}
+
+	def setLabelForSpecificationTab(String label){
+		this.docGenerator.labelForSpecificationTab = label
+	}
+
+	def setLabelForSourceTab(String label){
+		this.docGenerator.labelForSourceTab = label
+	}
+	
+	def setFooterText(String text) {
+		this.docGenerator.footerText = text
+	}
+
 	def loadResources(){
 		resourceSet = resourceSetProvider.get
 		encodingProvider.setDefaultEncoding(getFileEncoding())
