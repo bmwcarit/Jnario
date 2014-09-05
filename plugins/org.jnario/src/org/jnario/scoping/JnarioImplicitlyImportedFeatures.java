@@ -7,6 +7,7 @@ import org.jnario.lib.Each;
 import org.jnario.lib.JnarioCollectionLiterals;
 import org.jnario.lib.JnarioIterableExtensions;
 import org.jnario.lib.JnarioIteratorExtensions;
+import org.jnario.lib.Must;
 import org.jnario.lib.Should;
 import org.jnario.lib.StepArguments;
 import org.jnario.lib.StringConversions;
@@ -19,6 +20,7 @@ public class JnarioImplicitlyImportedFeatures extends ImplicitlyImportedFeatures
 		List<Class<?>> result = super.getExtensionClasses();
 //		result.remove(ObjectExtensions.class);
 		result.add(Should.class);
+		result.add(Must.class);
 //		result.add(ObjectExtensions.class);
 		result.add(Each.class);
 		result.add(StringConversions.class);
@@ -33,6 +35,7 @@ public class JnarioImplicitlyImportedFeatures extends ImplicitlyImportedFeatures
 		List<Class<?>> result = super.getStaticImportClasses();
 		result.add(Each.class);
 		result.add(Should.class);
+		result.add(Must.class);
 		result.add(Wait.class);
 		result.add(JnarioCollectionLiterals.class);
 		return result;
