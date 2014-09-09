@@ -10,12 +10,20 @@ package org.jnario.lib;
 import static com.google.common.collect.Iterables.contains;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 import org.eclipse.xtext.xbase.lib.Functions;
@@ -24,6 +32,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 import com.google.common.base.Objects;
+import com.google.common.io.Files;
 
 /**
  * The default should matchers provided by Jnario. These 
@@ -183,617 +192,587 @@ public class Should{
 		};
 	}
 
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param <T> - type of the elements in the collection.
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static <T> boolean should_contain(T[] actual, T element) {
-		if (actual != null) {
-			for(T v : actual) {
-				if ((v == null && element == null)
-						|| (v != null && v.equals(element))) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(boolean[] actual, boolean element) {
-		if (actual != null) {
-			for(boolean v : actual) {
-				if (v == element) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(char[] actual, char element) {
-		if (actual != null) {
-			for(char v : actual) {
-				if (v == element) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(byte[] actual, byte element) {
-		if (actual != null) {
-			for(byte v : actual) {
-				if (v == element) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(short[] actual, short element) {
-		if (actual != null) {
-			for(short v : actual) {
-				if (v == element) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(int[] actual, int element) {
-		if (actual != null) {
-			for(int v : actual) {
-				if (v == element) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(long[] actual, long element) {
-		if (actual != null) {
-			for(long v : actual) {
-				if (v == element) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(float[] actual, float element) {
-		if (actual != null) {
-			for(float v : actual) {
-				if (v == element) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given array contains an element equals to the
-	 * given value.
-	 *
-	 * @param actual - the collection to test.
-	 * @param element - the element that must be inside the collection.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(double[] actual, double element) {
-		if (actual != null) {
-			for(double v : actual) {
-				if (v == element) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/** Ensure that the given object is a byte equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_be(Object actual, byte expected) {
-		if (actual instanceof Byte) {
-			return Byte.valueOf(expected) == actual;
-		}
-		return false;
-	}
-
-	/** Ensure that the given object is a short integer equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_be(Object actual, short expected) {
-		if (actual instanceof Short) {
-			return Short.valueOf(expected) == actual;
-		}
-		return false;
-	}
-
-	/** Ensure that the given object is an integer equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_be(Object actual, int expected) {
-		if (actual instanceof Integer) {
-			return Integer.valueOf(expected) == actual;
-		}
-		return false;
-	}
-
-	/** Ensure that the given object is a long integer equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_be(Object actual, long expected) {
-		if (actual instanceof Long) {
-			return Long.valueOf(expected) == actual;
-		}
-		return false;
-	}
-
-	/** Ensure that the given object is a single-precision
-	 * floating point number equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_be(Object actual, float expected) {
-		if (actual instanceof Float) {
-			return Float.valueOf(expected) == actual;
-		}
-		return false;
-	}
-
-	/** Ensure that the given object is a double-precision
-	 * floating point number equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_be(Object actual, double expected) {
-		if (actual instanceof Double) {
-			return Double.valueOf(expected) == actual;
-		}
-		return false;
-	}
-
-	/** Ensure that the given object is a character equals to the given value.
-	 *
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_be(Object actual, char expected) {
-		if (actual instanceof Character) {
-			return Character.valueOf(expected) == actual;
-		}
-		return false;
-	}
-
-	/** Ensure that the given string representation of 
-	 * the given object is equal to the expected value.
-	 * @param <T> - type of the object.
-	 * @param actual - the object to test.
-	 * @param expected - the expected value.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_be(Object actual, String expected) {
-		if (actual != null && expected != null) {
-			return actual.toString().equals(expected);
-		}
-		return actual == expected;
-	}
-
-	/** Replies the stack trace element for the given level.
-	 * <p>
-	 * The given <var>level</var> permits to specify which class to reply:
-	 * <ul>
-	 * <li>{@code 0}: the class where is defined the function ({@code f<sub>0</sub>})
-	 * that has called one function of {@code Caller}</li>
-	 * <li>{@code 1}: the class where is defined the function ({@code f<sub>1</sub>})
-	 * that has called {@code f<sub>0</sub>}</li>
-	 * <li>{@code 2}: the class where is defined the function ({@code f<sub>2</sub>})
-	 * that has called {@code f<sub>1</sub>}</li>
-	 * <li>etc.</li>
-	 * </ul>
-	 * 
-	 * Copied from https://github.com/gallandarakhneorg/afc/tree/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil
-	 *
-	 * @param level is the desired level.
-	 * @return the stack trace element; or {@code null}.
-	 */
-	private static StackTraceElement getTraceElementAt(int level) {
-		if (level<0) return null;
-		try {
-			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			int j = -1;
-			boolean found = false;
-			Class<?> type;
-			for(int i=0; i<stackTrace.length; ++i) {
-				if (found) {
-					if (i-j==level) return stackTrace[i];
-				}
-				else {
-					type = Class.forName(stackTrace[i].getClassName());
-					if (type!=null && Should.class.isAssignableFrom(type)) {
-						j = i+1;
-					}
-					else if (j>=0) {
-						// First ocurrence of a class in the stack, after the
-						// inner invocation of StackTraceCaller
-						found = true;
-						if (i-j==level) return stackTrace[i];
-					}
-				}
-			}
-		}
-		catch(AssertionError e) {
-			throw e;
-		}
-		catch(Throwable _) {
-			//
-		}
-		return null;
-	}
-
-	/** Copied from https://github.com/gallandarakhneorg/afc/tree/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil
-	 * @param level
-	 * @return
-	 */
-	private static Class<?> getCallerClass(int level) {
-		StackTraceElement element = getTraceElementAt(level);
-		if (element==null) throw new IllegalArgumentException();
-		Class<?> type = Class.forName(element.getClassName());
-		if (type==null) throw new IllegalArgumentException();
-		return type;
-	}
-
 	/** Ensure that the given caller specification has a valid link
 	 * to another Jnario specification with the given name.
 	 *
-	 * @param referencedLink - URL
-	 * @return <code>true</code> if the condition is validated.
+	 * @param url - the url to check.
+	 * @param source - the object that is containing the URL.
+	 * @return the validation result.
 	 */
-	public static boolean should_beJnarioLink(String referencedLink) {
-		Class<?> callingSpecification = getCallerClass(2);
-		if (referencedLink == null || callingSpecification == null) {
-			return false;
-		}
-		//
-		String ref = referencedLink;
-		if (ref.startsWith("#")) { //$NON-NLS-1$
-			ref = "./" + callingSpecification.getSimpleName() + ".html" + ref; //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		String[] fragments = null;
-		if (ref.contains(".html#")) { //$NON-NLS-1$
-			String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
-			if (parts.length != 2) {
-				return false;
-			}
-			fragments = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
-			StringBuilder b = new StringBuilder();
-			for (String s : fragments) {
-				if (s.length() > 1) {
-					b.append(s.substring(0, 1).toUpperCase() + s.substring(1));
-				} else {
-					b.append(s.toUpperCase());
-				}
-			}
-			if (parts[0].endsWith("Spec")) { //$NON-NLS-1$
-				ref = parts[0].substring(0, parts[0].length() - 4)
-						+ b.toString() + "Spec.html"; //$NON-NLS-1$
-			} else {
-				ref = parts[0] + b.toString() + "Spec.html"; //$NON-NLS-1$
-			}
-		}
-		//
-		if (!isJnarioSpec(callingSpecification, ref)) {
-
-			// The specification could be a function of the Java class.
-			if (fragments != null) {
-				StringBuilder operationName = new StringBuilder();
-				for (String fragment : fragments) {
-					if (operationName.length() > 0) {
-						operationName.append(fragment.substring(0, 1).toUpperCase() + fragment.substring(1).toLowerCase());
-					} else {
-						operationName.append(fragment.toLowerCase());
-					}
-				}
-				String operationNameStr = "_" + operationName.toString(); //$NON-NLS-1$
-				try {
-					callingSpecification.getMethod(operationNameStr);
-					return true;
-				} catch (Throwable _) {
-					// Failure
-				}
-			}
-			
-			return false;
-		}
-		return true;
+	public static boolean should_beAccessibleFrom(String url, Object source) {
+		return isJnarioLink(url, source) || isResourceLink(url, source);
 	}
 
-	private static boolean isJnarioSpec(Class<?> callingSpecification, String reference) {
-		String url = reference;
-		//
-		if (!url.endsWith(".html")) { //$NON-NLS-1$
+	/**
+	 * Replies the URL of a resource.
+	 * <p>
+	 * You may use Unix-like syntax to write the resource path, ie.
+	 * you may use slashes to separate filenames.
+	 * <p>
+	 * The name of <var>packagename</var> is translated into a resource
+	 * path (by replacing the dots by slashes) and the given path
+	 * is append to. For example, the two following codes are equivalent:<pre><code>
+	 * Resources.getResources(Package.getPackage("org.arakhne.afc"), "/a/b/c/d.png");
+	 * Resources.getResources("org/arakhne/afc/a/b/c/d.png");
+	 * </code></pre>
+	 * <p>
+	 * If the <var>classLoader</var> parameter is <code>null</code>,
+	 * the class loader replied by {@link ClassLoaderFinder} is used.
+	 * If this last is <code>null</code>, the class loader of
+	 * the Resources class is used.
+	 * 
+	 * Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/Resources.java
+	 *
+	 * @param classLoader is the research scope. If <code>null</code>,
+	 * the class loader replied by {@link ClassLoaderFinder} is used.
+	 * @param packagename is the package in which the resource should be located.
+	 * @param path is the relative path of the resource in the package. 
+	 * @return the url of the resource or <code>null</code> if the resource was
+	 * not found in class paths.
+	 */
+	private static URL getResource(ClassLoader classLoader, Package packagename, String path) {
+		if (packagename==null || path==null) return null;
+		StringBuilder b = new StringBuilder();
+		b.append(packagename.getName().replaceAll(
+				Pattern.quote("."), //$NON-NLS-1$
+				java.util.regex.Matcher.quoteReplacement("/"))); //$NON-NLS-1$
+		if (!path.startsWith("/")) { //$NON-NLS-1$
+			b.append("/"); //$NON-NLS-1$
+		}
+		b.append(path);
+		return getResource(packagename.getClass().getClassLoader(), b.toString());
+	}
+
+	/**
+	 * Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/StandardJREResourceWrapper.java
+	 */
+	private static URL getResource(ClassLoader classLoader, String path) {
+		if (path==null) return null;
+		String resourcePath = path;
+		if (path.startsWith("/")) { //$NON-NLS-1$
+			resourcePath = path.substring(1);
+		}
+
+		ClassLoader loader = (classLoader==null)
+				? Should.class.getClassLoader()
+						: classLoader;
+				assert(loader!=null);
+
+				URL url = loader.getResource(resourcePath);
+
+				if (url==null) {
+					// Try to find in ./resources sub directory
+					url = loader.getResource("resources/" + resourcePath); //$NON-NLS-1$
+				}
+				return url;
+	}
+
+	private static boolean isResourceLink(String url, Object source) {
+		if (source == null || url == null) {
+			return false;
+		}
+		// Check if it is a URL of a file path
+		try {
+			URL fileURL;
+			try {
+				fileURL = new URL(url);
+			} catch (Throwable _) {
+				fileURL = new URL("file:" + url); //$NON-NLS-1$
+			}
+			if ("file".equalsIgnoreCase(fileURL.getProtocol())) { //$NON-NLS-1$
+				// Get local resource
+				URL u = getResource(
+						Should.class.getClassLoader(),
+						source.getClass().getPackage(),
+						fileURL.getPath());
+				if (u != null) {
+					return true;
+				}
+			}
+		} catch (Throwable _) {
+			//
+		}
+		return false;
+	}
+
+	private static boolean isJnarioLink(String url, Object source) {
+		if (source == null || url == null) {
 			return false;
 		}
 		//
-		url = url.substring(0, url.length() - 5);
-		File caller = new File(callingSpecification.getName().replaceAll(
-				"\\.", File.separator)).getParentFile(); //$NON-NLS-1$
-		File resolved = new File(caller, url.replaceAll("\\/", File.separator)); //$NON-NLS-1$
-		String resolvedPath = resolved.getPath();
-		resolvedPath = resolvedPath.replaceAll(java.util.regex.Matcher.quoteReplacement(File.separator), "."); //$NON-NLS-1$
 		try {
-			Class.forName(resolvedPath);
+			String ref = url;
+			if (ref.startsWith("#")) { //$NON-NLS-1$
+				ref = "./" + source.getClass().getSimpleName() + ".html" + ref; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+
+			String[] fragments = null;
+			if (ref.contains(".html#")) { //$NON-NLS-1$
+				String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
+				assertEquals(
+						String.format("Invalid link format: %s", ref), //$NON-NLS-1$
+						2, parts.length);
+				fragments = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
+				StringBuilder b = new StringBuilder();
+				for (String s : fragments) {
+					if (s.length() > 1) {
+						b.append(s.substring(0, 1).toUpperCase() + s.substring(1));
+					} else {
+						b.append(s.toUpperCase());
+					}
+				}
+				if (parts[0].endsWith("Spec")) { //$NON-NLS-1$
+					ref = parts[0].substring(0, parts[0].length() - 4)
+							+ b.toString() + "Spec.html"; //$NON-NLS-1$
+				} else {
+					ref = parts[0] + b.toString() + "Spec.html"; //$NON-NLS-1$
+				}
+			}
+			//
+			if (!isJnarioSpec(source.getClass(), ref)) {
+
+				// The specification could be a function of the Java class.
+				if (fragments != null) {
+					StringBuilder operationName = new StringBuilder();
+					for (String fragment : fragments) {
+						if (operationName.length() > 0) {
+							operationName.append(fragment.substring(0, 1).toUpperCase() + fragment.substring(1).toLowerCase());
+						} else {
+							operationName.append(fragment.toLowerCase());
+						}
+					}
+					String operationNameStr = "_" + operationName.toString(); //$NON-NLS-1$
+					try {
+						source.getClass().getMethod(operationNameStr);
+						return true;
+					} catch (Throwable _) {
+						// Failure
+					}
+				}
+
+				return false;
+			}
 			return true;
 		} catch (Throwable _) {
 			return false;
 		}
 	}
 
-	/** Ensure that the given string is a valid hyper-link.
-	 * The link must start with "http://" and not end with "/".
-	 *
-	 * @param referencedLink - the string to test.
-	 * @return <code>true</code> if the condition is validated.
+	/** Replies the type that corresponds to the specified class.
+	 * If the name corresponds to a primitive type, the low-level type
+	 * will be replied.
+	 * This method extends
+	 * {@link Class#forName(String)} with autoboxing support.
+	 * 
+	 * Copied from {@link "https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/ReflectionUtil.java"}.
+	 * 
+	 * @param name is the name of the class to load.
+	 * @return the loaded class
+	 * @throws ClassNotFoundException  if name names an
+	 * unknown class or primitive
 	 */
-	public static boolean should_beHttpLink(String referencedLink) {
-		return should_startWith(referencedLink, "http://") //$NON-NLS-1$
-				&& !should_endWith(referencedLink, "/"); //$NON-NLS-1$
+	public static Class<?> forName(String name) throws ClassNotFoundException {
+		if (name == null || "".equals(name) || "null".equals(name) || "void".equals(name)) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			return void.class;
+		}
+		if ("boolean".equals(name)) { //$NON-NLS-1$
+			return boolean.class;
+		}
+		if ("byte".equals(name)) { //$NON-NLS-1$
+			return byte.class;
+		}
+		if ("char".equals(name)) { //$NON-NLS-1$
+			return char.class;
+		}
+		if ("double".equals(name)) { //$NON-NLS-1$
+			return double.class;
+		}
+		if ("float".equals(name)) { //$NON-NLS-1$
+			return float.class;
+		}
+		if ("int".equals(name)) { //$NON-NLS-1$
+			return int.class;
+		}
+		if ("long".equals(name)) { //$NON-NLS-1$
+			return long.class;
+		}
+		if ("short".equals(name)) { //$NON-NLS-1$
+			return short.class;
+		}
+		return Class.forName(name);
 	}
-
-	/** Ensure that the given string is a Maven snapshot version.
-	 *
-	 * @param version - the version string.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_beSnapshotVersion(String version) {
-		return should_endWith(version, "-SNAPSHOT"); //$NON-NLS-1$
-	}
-
-	/**
-     * Replies the URL of a resource.
-     * <p>
-     * You may use Unix-like syntax to write the resource path, ie.
-     * you may use slashes to separate filenames.
-     * <p>
-     * The name of <var>packagename</var> is translated into a resource
-     * path (by replacing the dots by slashes) and the given path
-     * is append to. For example, the two following codes are equivalent:<pre><code>
-     * Resources.getResources(Package.getPackage("org.arakhne.afc"), "/a/b/c/d.png");
-     * Resources.getResources("org/arakhne/afc/a/b/c/d.png");
-     * </code></pre>
-     * <p>
-     * If the <var>classLoader</var> parameter is <code>null</code>,
-     * the class loader replied by {@link ClassLoaderFinder} is used.
-     * If this last is <code>null</code>, the class loader of
-     * the Resources class is used.
-     * 
-     * Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/Resources.java
-     *
-     * @param classLoader is the research scope. If <code>null</code>,
-     * the class loader replied by {@link ClassLoaderFinder} is used.
-     * @param packagename is the package in which the resource should be located.
-     * @param path is the relative path of the resource in the package. 
-     * @return the url of the resource or <code>null</code> if the resource was
-     * not found in class paths.
-     */
-    private static URL getResource(ClassLoader classLoader, Package packagename, String path) {
-    	if (packagename==null || path==null) return null;
-    	StringBuilder b = new StringBuilder();
-    	b.append(packagename.getName().replaceAll(
-    			Pattern.quote("."), //$NON-NLS-1$
-    			java.util.regex.Matcher.quoteReplacement("/")));
-    	if (!path.startsWith("/")) {
-    		b.append("/");
-    	}
-    	b.append(path);
-    	return getResource(packagename.getClass().getClassLoader(), b.toString());
-    }
-    
-    /**
-     * Copied from https://github.com/gallandarakhneorg/afc/blob/master/core/vmutils/src/main/java/org/arakhne/afc/vmutil/StandardJREResourceWrapper.java
-     */
-    private static URL getResource(ClassLoader classLoader, String path) {
-    	if (path==null) return null;
-    	String resourcePath = path;
-    	if (path.startsWith("/")) { //$NON-NLS-1$
-    		resourcePath = path.substring(1);
-    	}
-    	
-    	ClassLoader loader = (classLoader==null)
-    			? Should.class.getClassLoader()
-    			: classLoader;
-    	assert(loader!=null);
-    			
-    	URL url = loader.getResource(resourcePath);
-    	
-    	if (url==null) {
-    		// Try to find in ./resources sub directory
-    		url = loader.getResource("resources/"+resourcePath);
-    	}
-    	return url;
-    }
-	
-	/** Ensure that the given caller specification has a valid link
-	 * to a picture with the given name.
-	 *
-	 * @param referencedLink - URL
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_bePicture(String referencedLink) {
-		Class<?> callingSpecification = getCallerClass(2);
-		if (referencedLink == null || callingSpecification == null) {
+	private static boolean isJnarioSpec(Class<?> callingSpecification, String reference) {
+		String url = reference;
+		//
+		Assert.assertTrue(
+				String.format("\"%s\" must end with \".html\".", //$NON-NLS-1$
+						url.toString(), ".html"), //$NON-NLS-1$
+						url.endsWith(".html")); //$NON-NLS-1$
+		//
+		url = url.substring(0, url.length() - 5);
+		File caller = new File(callingSpecification.getName().replaceAll(
+				"\\.", File.separator)).getParentFile(); //$NON-NLS-1$
+		File resolved = new File(caller, url.replaceAll("\\/", File.separator)); //$NON-NLS-1$
+		String resolvedPath = Files.simplifyPath(resolved.getPath());
+		resolvedPath = resolvedPath.replaceAll(java.util.regex.Matcher.quoteReplacement(File.separator), "."); //$NON-NLS-1$
+		try {
+			forName(resolvedPath);
+			return true;
+		} catch (Throwable _) {
 			return false;
 		}
-		// Check if it is a URL of a file path
-		try {
-			URL fileURL = new URL(referencedLink);
-			if ("file".equalsIgnoreCase(fileURL.getProtocol())) {
-				// Get local resource
-				URL u = getResource(Should.class.getClassLoader(), callingSpecification.getPackage(), referencedLink);
-				if (u != null) { //$NON-NLS-1$
-					return true;
+	}
+
+	/** Ensure that the iterator replies the expected values in the given order.
+	 *
+	 * @param actual - the iterator to test.
+	 * @param expected - the expected values.
+	 * @return the validation status
+	 */
+	public static boolean should_iterate(Iterator<?> actual, Object expected) {
+		return should_iterate(actual, expected, true);
+	}
+
+	/** Ensure that the iterator replies the expected values in the given order.
+	 *
+	 * @param actual - the iterator to test.
+	 * @param expected - the expected values.
+	 * @param significantOrder - indicates if the order of the elements is significant.
+	 * @return the validation status
+	 */
+	public static boolean should_iterate(Iterator<?> actual, Object expected, boolean significantOrder) {
+		Object obj;
+		Iterator<?> it;
+		if (expected instanceof Iterable<?>) {
+			it = ((Iterable<?>) expected).iterator();
+		} else if (expected instanceof Array) {
+			final Array array = (Array) expected;
+			it = new ArrayIterator(array);
+		} else if (expected instanceof Map<?, ?>) {
+			it = ((Map<?, ?>) expected).entrySet().iterator();
+		} else {
+			it = Collections.singleton(expected).iterator();
+		}
+
+		if (significantOrder) {
+			// Significant order
+			Object eObj;
+			while (actual.hasNext()) {
+				obj = actual.next();
+				if (!it.hasNext()) {
+					return false;
+				}
+				eObj = it.next();
+				if (!Objects.equal(obj, eObj)) {
+					return false;
 				}
 			}
-		} catch (Throwable _) {
+			return !it.hasNext();
+		}
+
+		// Unsignificant order
+		List<Object> expectedElements = new LinkedList<Object>();
+		while (it.hasNext()) {
+			expectedElements.add(it.next());
+		}
+		boolean found;
+		while (actual.hasNext()) {
+			obj = actual.next();
+			Iterator<Object> i = expectedElements.iterator();
+			found = false;
+			while (!found && i.hasNext()) {
+				Object eObj = i.next();
+				if (Objects.equal(obj, eObj)) {
+					i.remove();
+					found = true;
+				}
+			}
+			if (!found) {
+				return false;
+			}
+		}
+		return expectedElements.isEmpty();
+	}
+
+	/** Ensure that the string has the format of a date.
+	 *
+	 * @param actual - the string to parse.
+	 * @param dateFormat - the expected format of the date, as
+	 * described in {@link SimpleDateFormat}. If <code>null</code>, the
+	 * default date format is considered.
+	 * @return the validation status
+	 */
+	public static boolean should_beDate(String actual, String dateFormat) {
+		if (actual == null || actual.isEmpty()) {
+			return false;
+		}
+		try {
+			DateFormat format;
+			if (dateFormat == null || dateFormat.isEmpty()) {
+				format = DateFormat.getDateInstance();
+			} else {
+				format = new SimpleDateFormat(dateFormat);
+			}
+			return format.parse(actual) != null;
+		} catch (Throwable _)  {
 			//
 		}
 		return false;
 	}
 
-	/** Ensure that the given string is a string representation of an integer,
-	 * without sign symbols.
+	/** Ensure that the string has the format of an URL.
 	 *
-	 * @param str - the string.
-	 * @return <code>true</code> if the condition is validated.
+	 * @param actual - the string to parse.
+	 * @param requiredSchemes - is a list of schemes that are supported.
+	 * If a scheme is prefix with the <code>!</code> character (without space),
+	 * then the scheme is not allowed.
+	 * If not given, all the schemes are allowed.
+	 * @return the validation status
 	 */
-	public static boolean should_beInteger(String str) {
-		return Pattern.matches("^[0-9]+$", str); //$NON-NLS-1$
-	}
-
-	/** Ensure that the given string is a string representation of a date.
-	 * A date has the format <code>yyyy-[m]m-[d]d</code>
-	 *
-	 * @param str - the string.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_beDate(String str) {
-		Date d = null;
+	public static boolean should_beURL(String actual, String requiredSchemes) {
+		if (actual == null || actual.isEmpty()) {
+			return false;
+		}
 		try {
-			d = DateFormat.getDateInstance().parse(str);
-		} catch (Throwable _) {
-			d = null;
-		}
-		return (d != null);
-	}
-
-	/** Ensure that the iterator replies the expected values in the given order.
-	 *
-	 * @param actual - the iterator to test.
-	 * @param expected - the expected values.
-	 * @return <code>true</code> if the condition is validated.
-	 */
-	public static boolean should_contain(Iterator<?> actual, Object[] expected) {
-		Object obj;
-		int index = 0;
-		while (actual.hasNext()) {
-			obj = actual.next();
-			if (index <= expected.length) {
-				if (!should_be(expected[index], obj)) {
-					return false;
-				}
-			} else {
-				return false;
+			URL u;
+			try {
+				u = new URL(actual);
+			} catch (Throwable _) {
+				u = new URL("file:" + actual);
 			}
-			index++;
+			if (requiredSchemes != null && !requiredSchemes.isEmpty()) {
+				boolean mustHaveScheme = false;
+				for(String s : requiredSchemes.trim().split("\\s*,\\s*")) { //$NON-NLS-1$
+					if (!s.isEmpty()) {
+						if (s.startsWith("!")) { //$NON-NLS-1$
+							if (s.substring(1).equalsIgnoreCase(u.getProtocol())) {
+								return false;
+							}
+						} else {
+							mustHaveScheme = true;
+							if (s.equalsIgnoreCase(u.getProtocol())) {
+								return true;
+							}
+						}
+					}
+				}
+				return !mustHaveScheme;
+			}
+			return true;
+		} catch (Throwable _)  {
+			//
 		}
 		return false;
 	}
 
-	/** Ensure that the iterator replies the expected values in the given order.
+	/** Ensure that the string has the format of a number.
 	 *
-	 * @param <T> - the type of the elements in the iterator.
-	 * @param actual - the iterator to test.
-	 * @param expected - the expected values.
-	 * @return <code>true</code> if the condition is validated.
+	 * @param actual - the string to parse.
+	 * @param numberFormat - the expected format of the number, as
+	 * described in {@link DecimalFormat}. If <code>null</code>, the
+	 * default date format is considered.
+	 * @return the validation status
 	 */
-	public static boolean should_contain(ListIterator<?> actual, Object[] expected) {
-		Object obj;
-		int index = 0;
-		while (actual.hasNext()) {
-			obj = actual.next();
-			if (index <= expected.length) {
-				if (!should_be(expected[index], obj)) {
-					return false;
-				}
+	public static boolean should_beNumber(String actual, String numberFormat) {
+		if (actual == null || actual.isEmpty()) {
+			return false;
+		}
+		try {
+			NumberFormat format;
+			if (numberFormat == null || numberFormat.isEmpty()) {
+				format = NumberFormat.getNumberInstance();
 			} else {
-				return false;
+				format = new DecimalFormat(numberFormat);
 			}
-			index++;
+			return format.parse(actual) != null;
+		} catch (Throwable _)  {
+			//
 		}
 		return false;
+	}
+
+	/** Assert that two objects are equal.
+	 * 
+	 * @param message - the error message.
+	 * @param expected - the expected value.
+	 * @param actual - the value to test.
+	 */
+	public static void assertEquals(String message, Object expected, Object actual) {
+		Assert.assertTrue(message, Objects.equal(expected, actual));
+	}
+
+	/** Ensure that the given type has the given type has the given method.
+	 * 
+	 * @param type - the type to check.
+	 * @param name - the name and prototype, e.g. <code>fct(java.lang.String):int</code>.
+	 * @return the validation status.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static boolean should_haveMethod(Class<?> type, String name) {
+		try {
+			Pattern p = Pattern.compile(
+					"^([_a-zA-Z0-9]+)\\s*" //$NON-NLS-1$
+					+ "(?:\\(\\s*([_a-zA-Z0-9.]+\\s*" //$NON-NLS-1$
+					+ "(?:,\\s*[_a-zA-Z0-9.]+\\s*)*)\\))?" //$NON-NLS-1$
+					+ "(?:\\s*:\\s*([_a-zA-Z0-9.]+))?$"); //$NON-NLS-1$
+			java.util.regex.Matcher m = p.matcher(name);
+			if (m.matches()) {
+				String fctName = m.group(1);
+				String paramText;
+				try {
+					paramText = m.group(2).trim();
+				} catch (Throwable _) {
+					paramText = ""; //$NON-NLS-1$
+				}
+				String returnText;
+				try {
+					returnText = m.group(3).trim();
+				} catch (Throwable _) {
+					returnText = ""; //$NON-NLS-1$
+				}
+				String[] params;
+				if (paramText.isEmpty()) {
+					params = new String[0];
+				} else {
+					params = paramText.split("\\s*,\\s*"); //$NON-NLS-1$
+				}
+				Class[] types = new Class[params.length]; 
+				for(int i=0; i<params.length; ++i) {
+					types[i] = forName(params[i]);
+				}
+				Method method = type.getDeclaredMethod(fctName, types);
+				if (method == null) {
+					return false;
+				}
+				if (returnText == null || returnText.isEmpty()) {
+					return void.class.equals(method.getReturnType())
+							|| Void.class.equals(method.getReturnType());
+				}
+				Class<?> rType = forName(returnText);
+				return rType.equals(method.getReturnType());
+			}
+		} catch (Throwable e) {
+			//
+		}
+		return false;
+	}
+
+	/** Ensure that the given type extends specific types.
+	 * 
+	 * @param type - the type to check.
+	 * @param expectedTypes - the qualified names of the expected types, separated by comas.
+	 * @return the validation status.
+	 */
+	public static boolean should_extend(Class<?> type, String expectedTypes) {
+		if (type == null) {
+			return false;
+		}
+		try {
+			Class<?> st = type.getSuperclass();
+			List<Class<?>> types = new LinkedList<Class<?>>();
+			if (st == null || Object.class.equals(st)) {
+				if (type.isInterface()) {
+					types.addAll(Arrays.asList(type.getInterfaces()));
+				}
+			} else {
+				types.add(st);
+			}
+			//
+			if (expectedTypes == null || expectedTypes.isEmpty()) {
+				return types.isEmpty();
+			}
+			for (String expectedType : expectedTypes.split("\\s*,\\s*")) { //$NON-NLS-1$
+				Class<?> et = forName(expectedType);
+				if (!types.remove(et)) {
+					return false;
+				}
+			}
+			return types.isEmpty();
+		} catch (Throwable e) {
+			//
+		}
+		return false;
+	}
+
+	/** Ensure that the given string is a valid Maven version number.
+	 * 
+	 * @param actual - the string to test.
+	 * @param allowSnapshot - indicates if the <code>-SNAPSHOT</code> postfix
+	 * is considered as valid.
+	 * @return the validation status.
+	 */
+	public static boolean should_beMavenVersion(String actual, boolean allowSnapshot) {
+		if (actual == null) {
+			return false;
+		}
+		if (!allowSnapshot && actual.endsWith("-SNAPSHOT")) { //$NON-NLS-1$
+			return false;
+		}
+		StringBuilder pattern = new StringBuilder("^"); //$NON-NLS-1$
+		pattern.append("[0-9a-zA-Z_-]+(\\.[0-9a-zA-Z_-]+)*"); //$NON-NLS-1$
+		pattern.append("$"); //$NON-NLS-1$
+		return Pattern.matches(pattern.toString(), actual);
+	}
+
+	/** Ensure that the given type has the number of members.
+	 * 
+	 * @param type - the type to check.
+	 * @param expectedNbOfElements - the expected number of elements.
+	 * @return the validation status.
+	 */
+	public static boolean should_haveNbMembers(Class<?> type, int expectedNbOfElements) {
+		if (type == null) {
+			return false;
+		}
+		try {
+			int nb = type.getDeclaredConstructors().length
+					+ type.getDeclaredFields().length
+					+ type.getDeclaredMethods().length
+					+ type.getDeclaredAnnotations().length
+					+ type.getDeclaredClasses().length;
+			return nb == expectedNbOfElements;
+		} catch (Throwable e) {
+			//
+		}
+		return false;
+	}
+
+	private static class ArrayIterator implements Iterator<Object> {
+
+		private final Array array;
+		private int index;
+		private Object obj;
+
+		/**
+		 * @param array
+		 */
+		public ArrayIterator(Array array) {
+			this.array = array;
+			searchNext();
+		}
+		private void searchNext() {
+			try {
+				this.obj = Array.get(this.array, this.index);
+				++this.index;
+			} catch (Throwable _) {
+				this.obj = null;
+			}
+		}
+
+		public boolean hasNext() {
+			return this.obj != null;
+		}
+
+		public Object next() {
+			if (this.obj == null) throw new NoSuchElementException();
+			Object o = this.obj;
+			searchNext();
+			return o;
+		}
+
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 }
