@@ -705,11 +705,13 @@ public class Should{
 		if (actual == null) {
 			return false;
 		}
-		if (!allowSnapshot && actual.endsWith("-SNAPSHOT")) { //$NON-NLS-1$
-			return false;
-		}
 		StringBuilder pattern = new StringBuilder("^"); //$NON-NLS-1$
 		pattern.append("[0-9a-zA-Z_-]+(\\.[0-9a-zA-Z_-]+)*"); //$NON-NLS-1$
+		if (allowSnapshot) { //$NON-NLS-1$
+			pattern.append("(?:"); //$NON-NLS-1$
+			pattern.append(Matcher.quoteReplacement("-SNAPSHOT")); //$NON-NLS-1$
+			pattern.append(")?"); //$NON-NLS-1$
+		}
 		pattern.append("$"); //$NON-NLS-1$
 		return Pattern.matches(pattern.toString(), actual);
 	}
