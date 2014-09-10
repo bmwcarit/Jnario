@@ -62,7 +62,7 @@ public class JnarioDocGenerate extends XtendTestCompile {
 	 * @parameter default-value="${basedir}/target/jnario-doc"
 	 * @required
 	 */
-	private String docOutputDirectory;
+	protected String docOutputDirectory;
 	
 	/**
 	 * Location of the generated JUnit XML reports.
@@ -70,26 +70,26 @@ public class JnarioDocGenerate extends XtendTestCompile {
 	 * @parameter default-value="${basedir}/target/surefire-reports"
 	 * @required
 	 */
-	private String reportsDirectory;
+	protected String reportsDirectory;
 	
 	/**
 	 * Location of the generated JUnit XML reports.
 	 * 
 	 * @parameter 
 	 */
-	private String sourceDirectory;
+	protected String sourceDirectory;
 	
 	@Inject
-	private RuntimeWorkspaceConfigProvider workspaceConfigProvider;
+	protected RuntimeWorkspaceConfigProvider workspaceConfigProvider;
 
-	private Provider<ResourceSet> resourceSetProvider;
+	protected Provider<ResourceSet> resourceSetProvider;
 
 	@Override
 	protected void internalExecute() throws MojoExecutionException {
 		getLog().info("Generating Jnario reports to " + docOutputDirectory);
 		
 		// the order is important, the suite compiler must be executed last
-		List<Injector> injectors = createInjectors(new SpecStandaloneSetup(), new FeatureStandaloneSetup(), new SuiteStandaloneSetup());
+		List<Injector> injectors = createInjectors(getStandaloneSetups());
 		generateCssAndJsFiles(injectors);
 		resourceSetProvider = new JnarioMavenProjectResourceSetProvider(project);
 
@@ -97,6 +97,14 @@ public class JnarioDocGenerate extends XtendTestCompile {
 		for (Injector injector : injectors) {
 			generateDoc(injector, resultMapping);
 		}
+	}
+	
+	protected ISetup[] getStandaloneSetups() {
+		return new ISetup[] {
+			new SpecStandaloneSetup(),
+			new FeatureStandaloneSetup(),
+			new SuiteStandaloneSetup(),
+		};
 	}
 
 	protected HashBasedSpec2ResultMapping createSpec2ResultMapping(List<Injector> injectors) throws MojoExecutionException {

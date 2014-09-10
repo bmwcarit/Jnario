@@ -32,7 +32,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 import com.google.common.base.Objects;
-import com.google.common.io.Files;
 
 /**
  * The default should matchers provided by Jnario. These 
@@ -193,7 +192,8 @@ public class Should{
 	}
 
 	/** Ensure that the given caller specification has a valid link
-	 * to another Jnario specification with the given name.
+	 * to another Jnario specification with the given name, or
+	 * to a Java resource.
 	 *
 	 * @param url - the url to check.
 	 * @param source - the object that is containing the URL.
@@ -309,9 +309,9 @@ public class Should{
 			String[] fragments = null;
 			if (ref.contains(".html#")) { //$NON-NLS-1$
 				String[] parts = ref.split(java.util.regex.Matcher.quoteReplacement(".html#")); //$NON-NLS-1$
-				assertEquals(
-						String.format("Invalid link format: %s", ref), //$NON-NLS-1$
-						2, parts.length);
+				if (2 != parts.length) {
+					return false;
+				}
 				fragments = parts[1].split(java.util.regex.Matcher.quoteReplacement("_") + "+"); //$NON-NLS-1$ //$NON-NLS-2$
 				StringBuilder b = new StringBuilder();
 				for (String s : fragments) {
@@ -401,19 +401,19 @@ public class Should{
 		}
 		return Class.forName(name);
 	}
+	
 	private static boolean isJnarioSpec(Class<?> callingSpecification, String reference) {
 		String url = reference;
 		//
-		Assert.assertTrue(
-				String.format("\"%s\" must end with \".html\".", //$NON-NLS-1$
-						url.toString(), ".html"), //$NON-NLS-1$
-						url.endsWith(".html")); //$NON-NLS-1$
+		if (!url.endsWith(".html")) { //$NON-NLS-1$
+			return false;
+		}
 		//
 		url = url.substring(0, url.length() - 5);
 		File caller = new File(callingSpecification.getName().replaceAll(
 				"\\.", File.separator)).getParentFile(); //$NON-NLS-1$
 		File resolved = new File(caller, url.replaceAll("\\/", File.separator)); //$NON-NLS-1$
-		String resolvedPath = Files.simplifyPath(resolved.getPath());
+		String resolvedPath = resolved.getPath();//Files.simplifyPath(resolved.getPath());
 		resolvedPath = resolvedPath.replaceAll(java.util.regex.Matcher.quoteReplacement(File.separator), "."); //$NON-NLS-1$
 		try {
 			forName(resolvedPath);
@@ -589,16 +589,6 @@ public class Should{
 			//
 		}
 		return false;
-	}
-
-	/** Assert that two objects are equal.
-	 * 
-	 * @param message - the error message.
-	 * @param expected - the expected value.
-	 * @param actual - the value to test.
-	 */
-	public static void assertEquals(String message, Object expected, Object actual) {
-		Assert.assertTrue(message, Objects.equal(expected, actual));
 	}
 
 	/** Ensure that the given type has the given type has the given method.

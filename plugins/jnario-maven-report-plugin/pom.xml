@@ -193,6 +193,14 @@ https://github.com/sebastianbenz/Jnario/issues
 			<roles>
 			</roles>
 		</developer>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane Galland</name>
+			<email>galland@arakhne.org</email>
+			<timezone>GMT+1</timezone>
+			<roles>
+			</roles>
+		</developer>
 	</developers>
 	<distributionManagement>
 		<snapshotRepository>
