@@ -32,6 +32,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 import com.google.common.base.Objects;
+import com.google.common.io.Files;
 
 /**
  * The default should matchers provided by Jnario. These 
