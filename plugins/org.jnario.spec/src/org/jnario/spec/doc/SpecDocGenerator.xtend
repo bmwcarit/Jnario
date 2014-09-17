@@ -41,6 +41,10 @@ class SpecDocGenerator extends AbstractDocGenerator {
 			sourceCode = xtendClass.eContainer.pre("lang-spec")
 			fileName = xtendClass.fileName
 			executionStatus = exampleGroup.executionStateClass
+			showTabs = tabGenerated
+			specTabLabel = labelForSpecificationTab
+			sourceTabLabel = labelForSourceTab
+			footer = footerText
 		]
 	}
 

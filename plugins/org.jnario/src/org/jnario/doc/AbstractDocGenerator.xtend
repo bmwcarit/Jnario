@@ -46,7 +46,44 @@ abstract class AbstractDocGenerator implements IGenerator {
 	@Inject extension HtmlFileBuilder
 	@Inject extension DocumentationProvider documentationProvider
 	@Inject extension Executable2ResultMapping spec2ResultMapping
+	
+	private boolean showTabs = true
+	private String specTabLabel = null
+	private String sourceTabLabel = null
+	private String footerText = null
  
+ 	def setTabGenerated(boolean show){
+		this.showTabs = show
+	}
+	
+	def boolean isTabGenerated() {
+		return this.showTabs
+	}
+
+	def setLabelForSpecificationTab(String label){
+		this.specTabLabel = label
+	}
+
+	def String getLabelForSpecificationTab() {
+		return this.specTabLabel
+	}
+
+	def setLabelForSourceTab(String label){
+		this.sourceTabLabel = label
+	}
+ 
+	def String getLabelForSourceTab() {
+		return this.sourceTabLabel
+	}
+	
+	def setFooterText(String text) {
+		this.footerText = text
+	}
+	
+	def String getFooterText() {
+		return this.footerText
+	}
+
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		doGenerate(input, fsa, spec2ResultMapping)
 	}

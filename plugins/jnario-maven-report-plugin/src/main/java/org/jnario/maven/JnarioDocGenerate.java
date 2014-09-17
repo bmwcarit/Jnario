@@ -79,6 +79,34 @@ public class JnarioDocGenerate extends XtendTestCompile {
 	 */
 	private String sourceDirectory;
 	
+	/**
+	 * Does that tabs "Spec"/"Source" in the generated HTML files are generated?
+	 * 
+	 * @parameter default-value="true"
+	 */
+	private boolean showTabs;
+	
+	/**
+	 * Label of the "Spec" tab in the generated HTML files.
+	 * 
+	 * @parameter
+	 */
+	private String specTabLabel;
+
+	/**
+	 * Label of the "Source" tab in the generated HTML files.
+	 * 
+	 * @parameter
+	 */
+	private String sourceTabLabel;
+
+	/**
+	 * Text of the footer in the generated HTML file.
+	 * 
+	 * @parameter
+	 */
+	private String footerText;
+
 	@Inject
 	private RuntimeWorkspaceConfigProvider workspaceConfigProvider;
 
@@ -149,6 +177,10 @@ public class JnarioDocGenerate extends XtendTestCompile {
 	private void generateDoc(Injector injector, Executable2ResultMapping resultMapping) throws MojoExecutionException {
 		JnarioDocCompiler docCompiler = injector.getInstance(JnarioDocCompiler.class);
 		docCompiler.setExecutable2ResultMapping(resultMapping);
+		docCompiler.setTabGenerated(showTabs);
+		docCompiler.setLabelForSpecificationTab(specTabLabel);
+		docCompiler.setLabelForSourceTab(sourceTabLabel);
+		docCompiler.setFooterText(footerText);
 		compileTestSources(docCompiler);
 	}
 	
